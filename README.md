@@ -89,6 +89,15 @@ async def say_hello(bot, update):
     await bot.reply(update["message"]["chat"]["id"], "Basic help information.", buttons) 
 ```
 
+Export data after command by your keys
+
+```python 
+@bot.commands(['usernameandage'])
+@bot.with_args(['username', 'age'])
+async def handler(bot, update, data): 
+    await bot.reply(update["message"]["chat"]["id"], f"Hello {data['username']}, you are {data['age']} years old.")
+```
+
 ## Callbacks
 Telegant also offers to you simply detect your callbacks where you able to assign many or one callback to your function
 
@@ -103,7 +112,7 @@ async def say_hello(bot, update):
 ### Single callback example
 
 ```python 
-@bot.callback('option1')
+@bot.callback(['option1'])
 async def say_hello(bot, update):  
     await bot.reply(update["message"]["chat"]["id"], "Callback is detected", buttons) 
 ```
