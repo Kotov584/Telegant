@@ -13,7 +13,7 @@ class Telegant:
 
     def hears(self, pattern):
         def decorator(handler):
-            self.message_handlers[re.compile(pattern)] = handler
+            self.message_handlers[pattern] = handler 
             return handler
         return decorator
 
@@ -72,8 +72,8 @@ class Telegant:
                                     await handler(self, update, args)
 
                             if not is_command:
-                                for pattern, handler in self.message_handlers.items():
-                                    if pattern.match(message_text):
+                                for pattern, handler in self.message_handlers.items(): 
+                                    if pattern == message_text:
                                         await handler(self, update)
 
                             last_update_id = update["update_id"] + 1
