@@ -9,7 +9,7 @@ class Telegant:
         self.base_url = f"https://api.telegram.org/bot{self.token}/"
         self.message_handlers = {}
         self.command_handlers = {}
-        self.callback_handlers = {}
+        self.callback_handlers = {} 
 
     def hears(self, pattern):
         def decorator(handler):
