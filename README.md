@@ -26,6 +26,16 @@ asyncio.run(bot.start_polling())
 
 # Usage 
 
+## On text 
+
+If you need your bot to respond to defined text just use @bot.hears()
+
+```python 
+@bot.hears("hello")
+async def say_hello(bot, update): 
+    await bot.reply(update["message"]["chat"]["id"], "What's up?") 
+```
+
 ## Sending bot with buttons
 
 ### Inline buttons example
@@ -76,4 +86,21 @@ async def say_hello(bot, update):
     await bot.reply(update["message"]["chat"]["id"], "Basic help information.", buttons) 
 ```
 
+## Callbacks
+Telegant also offers to you simply detect your callbacks where you able to assign many or one callback to your function
 
+### Many callbacks example 
+
+```python 
+@bot.callbacks(['option1', 'option2'])
+async def say_hello(bot, update):  
+    await bot.reply(update["message"]["chat"]["id"], "Callback is detected", buttons) 
+```
+
+### Single callback example
+
+```python 
+@bot.callback(['option1'])
+async def say_hello(bot, update):  
+    await bot.reply(update["message"]["chat"]["id"], "Callback is detected", buttons) 
+```
