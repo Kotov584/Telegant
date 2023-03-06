@@ -84,9 +84,12 @@ class Telegant:
                 await handler(self, update, args)
 
         if not is_command:
+            handled = False
             for pattern, handler in self.message_handlers.items(): 
-                if pattern == message_text:
+                if re.fullmatch(pattern, message_text):
                     await handler(self, update)
+                    handled = True
+                    break
 
     async def handle_callback_query(self, update):
         chat_id = update["callback_query"]["message"]["chat"]["id"]
