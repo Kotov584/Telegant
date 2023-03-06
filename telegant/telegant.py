@@ -118,27 +118,11 @@ class Telegant:
 
     async def reply(self, chat_id, text, buttons=None):
         async with aiohttp.ClientSession() as session:
-            if buttons is None:
-                params = {"chat_id": chat_id, "text": text}
-                await session.post(f"{self.base_url}sendMessage", params=params)
-                return None
-            
-            inline_keyboards = []
-            reply_keyboards = []
-
-            for button in buttons:
-                (inline_keyboards.append(button) if "data" in button else reply_keyboards.append(button))
-
-            inline_keyboard = []
-            reply_keyboard = []
-
-            if inline_keyboards:
-                inline_keyboard = [[{"text": inline_keyboard['text'], "callback_data": inline_keyboard['data']}] for inline_keyboard in inline_keyboards]
-
-            if reply_keyboards:
-                reply_keyboard = [[{"text": reply_keyboard['text']}] for reply_keyboard in reply_keyboards]
-
-            params = {"chat_id": chat_id, "text": text, "reply_markup": json.dumps({"inline_keyboard": inline_keyboard, "keyboard": reply_keyboard, "one_time_keyboard": True})}
+            params = {"chat_id": chat_id, "text": text}
+            if buttons:
+                inline_keyboard = [[{"text": b['text'], "callback_data": b['data']}] for b in buttons if 'data' in b]
+                reply_keyboard = [[{"text": b['text']}] for b in buttons if 'data' not in b]
+                params["reply_markup"] = json.dumps({"inline_keyboard": inline_keyboard, "keyboard": reply_keyboard, "one_time_keyboard": True})
             await session.post(f"{self.base_url}sendMessage", params=params)
 
     @staticmethod
