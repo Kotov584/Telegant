@@ -1,7 +1,7 @@
 import asyncio
 import json
 import re
-import aiohttp
+import aiohttp 
 
 class Telegant:
     def __init__(self, token):
@@ -9,103 +9,105 @@ class Telegant:
         self.base_url = f"https://api.telegram.org/bot{self.token}/"
         self.message_handlers = {}
         self.command_handlers = {}
-        self.callback_handlers = {} 
+        self.callback_handlers = {}
+        self.user_state = {}
+        self.dialogues = {}
 
-    def hears(self, pattern):
+    def add_handler(self, handler_dict, key):
         def decorator(handler):
-            self.message_handlers[pattern] = handler 
+            handler_dict[key] = handler
             return handler
         return decorator
+
+    def hears(self, pattern):
+        return self.add_handler(self.message_handlers, pattern)
 
     def commands(self, commands_list):
-        def decorator(handler):
-            for command in commands_list:
-                self.command_handlers[command] = handler
-            return handler
-        return decorator
+        for command in commands_list:
+            self.add_handler(self.command_handlers, command)
 
     def command(self, command_str):
-        def decorator(handler):
-            self.command_handlers[command_str] = handler
-            return handler
-        return decorator
+        return self.add_handler(self.command_handlers, command_str)
 
     def callbacks(self, callbacks_list):
-        def decorator(handler):
-            for callback in callbacks_list:
-                self.callback_handlers[callback] = handler
-            return handler
-        return decorator
-    
+        for callback in callbacks_list:
+            self.add_handler(self.callback_handlers, callback)
+
     def callback(self, callback_data):
-        def decorator(handler):
-            self.callback_handlers[callback_data] = handler
-            return handler
-        return decorator
+        return self.add_handler(self.callback_handlers, callback_data)
 
     async def start_polling(self):
         last_update_id = 0
         async with aiohttp.ClientSession() as session:
             while True:
-                try:
-                    response = await session.get(f"{self.base_url}getUpdates", params={"offset": last_update_id})
-                    if response.status != 200:
-                        print(f"Error: {response.status}")
-                        continue
+                response_json, last_update_id = await self.get_updates(session, last_update_id)
+                if not response_json.get("ok"):
+                    print("Error: Response is not OK")
+                    continue
 
-                    response_json = await response.json()
-                    if not response_json.get("ok"):
-                        print("Error: Response is not OK")
-                        continue
+                for update in response_json["result"]:
+                    await self.handle_update(update)
 
-                    for update in response_json["result"]:
-                        if "message" in update:
-                            chat_id = update["message"]["chat"]["id"]
-                            message_text = update["message"]["text"]
+    async def get_updates(self, session, last_update_id):
+        try:
+            response = await session.get(f"{self.base_url}getUpdates", params={"offset": last_update_id})
+            if response.status != 200:
+                print(f"Error: {response.status}")
+                return None, last_update_id
 
-                            is_command = False
-                            if message_text.startswith('/'):
-                                command, *args = message_text[1:].split()
-                                handler = self.command_handlers.get(command)
-                                if handler is not None:
-                                    is_command = True
-                                    await handler(self, update, args)
+            response_json = await response.json()
+            for update in response_json["result"]:
+                last_update_id = max(last_update_id, update["update_id"] + 1)
 
-                            if not is_command:
-                                for pattern, handler in self.message_handlers.items(): 
-                                    if pattern == message_text:
-                                        await handler(self, update)
+            return response_json, last_update_id
 
-                            last_update_id = update["update_id"] + 1
+        except Exception as e:
+            print(f"Error polling for updates: {e}")
+            return None, last_update_id
 
-                        elif "callback_query" in update:
-                            chat_id = update["callback_query"]["message"]["chat"]["id"]
-                            callback_data = update["callback_query"]["data"]
-                            
-                            callback_handler = self.callback_handlers.get(callback_data)
-                            if callback_handler is not None:
-                                await callback_handler(self, update, update["callback_query"]["message"])
+    async def handle_update(self, update):
+        if "message" in update:
+            await self.handle_message(update)
+        elif "callback_query" in update:
+            await self.handle_callback_query(update)
 
-                            await self.answer_callback_query(update["callback_query"]["id"])
-                            last_update_id = update["update_id"] + 1
+    async def handle_message(self, update):
+        chat_id = update["message"]["chat"]["id"]
+        message_text = update["message"]["text"]
 
-                    await asyncio.sleep(0.1)
+        is_command = False
+        if message_text.startswith('/'):
+            command, *args = message_text[1:].split()
+            handler = self.command_handlers.get(command)
+            if handler is not None:
+                is_command = True
+                await handler(self, update, args)
 
-                except Exception as e:
-                    print(f"Error polling for updates: {e}")
+        if not is_command:
+            for pattern, handler in self.message_handlers.items(): 
+                if pattern == message_text:
+                    await handler(self, update)
 
-    @staticmethod
-    def with_args(keys):
-        def decorator(handler_func):
-            async def wrapper(bot, update, data):
-                message = update.get("message")
-                if message:
-                    message_text = message.get("text", "")
-                    args = message_text.split()[1:]
-                    data = {k: args[i] if i < len(args) else "" for i, k in enumerate(keys)}
-                    await handler_func(bot, update, data)
-            return wrapper
-        return decorator 
+    async def handle_callback_query(self, update):
+        chat_id = update["callback_query"]["message"]["chat"]["id"]
+        callback_data = update["callback_query"]["data"]
+        
+        callback_handler = self.callback_handlers.get(callback_data)
+        if callback_handler is not None:
+            await callback_handler(self, update, update["callback_query"]["message"])
+
+        await self.answer_callback_query(update["callback_query"]["id"])
+
+    async def answer_callback_query(self, callback_query_id):
+        async with aiohttp.ClientSession() as session:
+            try:
+                await session.post(
+                    f"{self.base_url}answerCallbackQuery",
+                    params={"callback_query_id": callback_query_id}
+                )
+            except Exception as e:
+                print(f"Error answering callback query: {e}")
+
  
     async def answer_callback_query(self, callback_query_id):
         async with aiohttp.ClientSession() as session:
@@ -138,3 +140,16 @@ class Telegant:
 
             params = {"chat_id": chat_id, "text": text, "reply_markup": json.dumps({"inline_keyboard": inline_keyboard, "keyboard": reply_keyboard, "one_time_keyboard": True})}
             await session.post(f"{self.base_url}sendMessage", params=params)
+
+    @staticmethod
+    def with_args(keys):
+        def decorator(handler_func):
+            async def wrapper(bot, update, data):
+                message = update.get("message")
+                if message:
+                    message_text = message.get("text", "")
+                    args = message_text.split()[1:]
+                    data = {k: args[i] if i < len(args) else "" for i, k in enumerate(keys)}
+                    await handler_func(bot, update, data)
+            return wrapper
+        return decorator 
