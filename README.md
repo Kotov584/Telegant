@@ -103,7 +103,7 @@ async def say_hello(bot, update):
 ### Single callback example
 
 ```python 
-@bot.callback(['option1'])
+@bot.callback('option1')
 async def say_hello(bot, update):  
     await bot.reply(update["message"]["chat"]["id"], "Callback is detected", buttons) 
 ```
