@@ -47,7 +47,7 @@ async def say_hello(bot, update):
 async def say_hello(bot, update): 
  
     buttons = [
-        {"text": "Option 1 (inline)"},  
+        {"text": "Option 1 (reply)"},  
     ]
 
     await bot.reply(update["message"]["chat"]["id"], "What's up?", buttons) 
@@ -60,19 +60,20 @@ Otherwise, it will detect as reply keyboard.
 
 ## Commands
 
-You can assign to one function one command or many commands as needed
-For single command use @bot.command decorator
+You can assign to one function one command or many commands as needed.
+For single command use @bot.command() decorator.
 
 ```python 
 @bot.command("start")
-async def say_hello(bot, update): 
- 
-    buttons = [
-        {"text": "Option 1 (inline)", "data": "option1"},  
-    ]
-
-    await bot.reply(update["message"]["chat"]["id"], "What's up?", buttons) 
+async def say_hello(bot, update):  
+    await bot.reply(update["message"]["chat"]["id"], "Welcome, your bot works perfectly.", buttons) 
 ```
+For several commands use @bot.commands() decorator.
 
+```python 
+@bot.commands(['help', 'ask'])
+async def say_hello(bot, update):  
+    await bot.reply(update["message"]["chat"]["id"], "Basic help information.", buttons) 
+```
 
 
