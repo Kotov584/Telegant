@@ -1,7 +1,8 @@
 # Telegant 
-Telegant - An Elegant Modern Bot Framework for Python.
-This project is designed to provide developers simple and elegant access to Telegram bot api.
-Project is at the Alpha testing stage and provides only required basic features at the moment to proof concept of simplicity.
+Telegant is an elegant modern bot framework for Python, designed to provide developers with simple and elegant access to the Telegram bot API.
+The project is currently at the alpha testing stage and provides only the required basic features to prove the concept of simplicity.
+
+
 
 # Installation 
 To install the project, simply run:
