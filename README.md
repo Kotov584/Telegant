@@ -5,7 +5,10 @@ Project is at the Alpha testing stage and provides only required basic features 
 
 ## Installation 
 To install the project, simply run:
+
+```python 
 pip install telegant
+```
 
 # Example 
 
