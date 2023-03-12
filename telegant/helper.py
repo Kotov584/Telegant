@@ -5,6 +5,9 @@ class Helper:
     def create_reply_keyboard(self, buttons):
         return [[{"text": b['text']}] for b in buttons if 'data' not in b]
 
+    def create_reply_markup(buttons):
+        return json.dumps({"inline_keyboard": self.create_inline_keyboard(buttons), "keyboard": self.create_reply_keyboard(buttons), "one_time_keyboard": True})
+
     @staticmethod
     def with_args(keys):
         def decorator(handler_func):

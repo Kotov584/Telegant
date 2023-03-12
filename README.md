@@ -13,8 +13,6 @@
 Telegant is an elegant modern bot framework for Python, designed to provide developers with simple and elegant access to the Telegram bot API.
 The project is currently at the alpha testing stage and provides only the required basic features to prove the concept of simplicity.
 
-
-
 # Installation 
 To install the project, simply run:
 
@@ -32,7 +30,12 @@ bot = Telegant("YOUR_BOT_TOKEN_HERE")
 
 @bot.hears("hello")
 async def say_hello(bot, update): 
-    await bot.reply(update["message"]["chat"]["id"], "What's up?") 
+    await bot.sendMessage(
+        {
+            "chat_id": update["message"]["chat"]["id"],
+            "text": "What's up?"
+        }
+    )
 
 #Your code here (Recommended to write your functions in order)
 
