@@ -1,9 +1,10 @@
 
+<h1 align="center"> Telegant </h1>
 <p align="center">
-    <h1><code>Telegant</code></h1>
     <a href="https://t.me/telegant_group"><img src="https://img.shields.io/badge/Telegram-Group-blue.svg?logo=telegram"></a>
     <a href="https://t.me/telegant_official"><img src="https://img.shields.io/badge/Telegram%20channel-telegant_official-blue.svg?logo=telegram"></a>
 </p>
+
 
 
 # Telegant 
