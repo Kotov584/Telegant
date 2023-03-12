@@ -11,9 +11,8 @@ class Bot(Handler, Decorator, Answer, Api, Helper):
         self.base_url = f"https://api.telegram.org/bot{self.token}/"
         self.message_handlers = {}
         self.command_handlers = {}
-        self.callback_handlers = {}
-        self.user_state = {}
-        self.dialogues = {}
+        self.callback_handlers = {} 
+        self.user_dialogues = {}
 
     async def start_polling(self):
         last_update_id = 0
