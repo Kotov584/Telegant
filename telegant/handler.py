@@ -40,3 +40,13 @@ class Handler:
             await callback_handler(self, update, update["callback_query"]["message"])
 
         await self.answer_callback_query(update["callback_query"]["id"])
+
+    async def answer_callback_query(self, callback_query_id):
+        async with aiohttp.ClientSession() as session:
+            try:
+                await session.post(
+                    f"{self.base_url}answerCallbackQuery",
+                    params={"callback_query_id": callback_query_id}
+                )
+            except Exception as e:
+                print(f"Error answering callback query: {e}")
