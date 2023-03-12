@@ -1,5 +1,4 @@
-[![Telegram](https://img.shields.io/badge/chat-on%20telegram-blue.svg)](https://t.me/telegant_group)
-
+[![Support](https://img.shields.io/badge/Support-t.me/telegant_group-blue.svg)](https://t.me/telegant_group)
 
 # Telegant 
 Telegant is an elegant modern bot framework for Python, designed to provide developers with simple and elegant access to the Telegram bot API.
