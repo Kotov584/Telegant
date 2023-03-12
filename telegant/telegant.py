@@ -1,11 +1,10 @@
-from telegant.answer import Answer
 from telegant.api import Api
 from telegant.decorator import Decorator
 from telegant.handler import Handler
 from telegant.helper import Helper
 import aiohttp   
 
-class Bot(Handler, Decorator, Answer, Api, Helper): 
+class Bot(Handler, Decorator, Api, Helper): 
     def __init__(self, token):
         self.token = token
         self.base_url = f"https://api.telegram.org/bot{self.token}/"
