@@ -1,5 +1,7 @@
 
-<h1 align="center"> Telegant </h1>
+<h1 align="center">
+    <code>teloxide</code>
+</h1>
 <p align="center">
     <a href="https://t.me/telegant_group"><img src="https://img.shields.io/badge/Telegram-Group-blue.svg?logo=telegram"></a>
     <a href="https://t.me/telegant_official"><img src="https://img.shields.io/badge/Telegram%20channel-telegant_official-blue.svg?logo=telegram"></a>
