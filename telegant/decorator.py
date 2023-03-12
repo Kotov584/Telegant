@@ -6,14 +6,19 @@ class Decorator:
         return decorator
 
     def hears(self, pattern):
-        return self.add_handler(self.message_handlers, pattern)
-
-    def commands(self, commands_list):
-        for command in commands_list:
-            self.add_handler(self.command_handlers, command)(handler_func)
+        return self.add_handler(self.message_handlers, pattern) 
 
     def command(self, command_str):
         return self.add_handler(self.command_handlers, command_str) 
+
+    def commands(self, commands_list):
+        def decorator(handler_func):
+            for command in commands_list:
+                self.add_handler(self.command_handlers, command)(handler_func)
+            def wrapper(*args, **kwargs):
+                return handler_func(*args, **kwargs)
+            return wrapper
+        return decorator 
 
     def callbacks(self, callbacks_list):
         def decorator(handler_func):

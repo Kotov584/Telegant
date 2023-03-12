@@ -1,3 +1,5 @@
+import json
+
 class Helper: 
     def create_inline_keyboard(self, buttons):
         return [[{"text": b['text'], "callback_data": b.get('data', '')}] for b in buttons]
@@ -5,7 +7,7 @@ class Helper:
     def create_reply_keyboard(self, buttons):
         return [[{"text": b['text']}] for b in buttons if 'data' not in b]
 
-    def create_reply_markup(buttons):
+    def create_reply_markup(self, buttons):
         return json.dumps({"inline_keyboard": self.create_inline_keyboard(buttons), "keyboard": self.create_reply_keyboard(buttons), "one_time_keyboard": True})
 
     @staticmethod
