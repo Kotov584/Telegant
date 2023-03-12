@@ -5,7 +5,7 @@
 <p align="center">
     <a href="https://t.me/telegant_group"><img src="https://img.shields.io/badge/Telegram-Group-blue.svg?logo=telegram"></a>
     <a href="https://t.me/telegant_official"><img src="https://img.shields.io/badge/Telegram-Channel-blue.svg?logo=telegram"></a> 
-    <a href="https://pypistats.org/packages/telegant"><img src="https://img.shields.io/pypi/dm/telegant.svg)"></a>
+    <a href="https://pypistats.org/packages/telegant"><img src="https://img.shields.io/pypi/dm/telegant.svg"></a>
 </p>
 
 
