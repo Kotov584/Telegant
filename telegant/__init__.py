@@ -1,1 +1,1 @@
-from .telegant import Telegant
+from .telegant import Bot
