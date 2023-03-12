@@ -41,3 +41,9 @@ class Bot(Handler, Decorator, Api, Helper):
         except Exception as e:
             print(f"Error polling for updates: {e}")
             return None, last_update_id
+'''
+class Bot(Decorator): 
+    api: Api, 
+    helper: Helper, 
+    handler: Handler
+'''
