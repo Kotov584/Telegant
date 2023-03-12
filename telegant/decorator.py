@@ -10,7 +10,7 @@ class Decorator:
 
     def commands(self, commands_list):
         for command in commands_list:
-            self.add_handler(self.command_handlers, command)(lambda : None)
+            self.add_handler(self.command_handlers, command)(handler_func)
 
     def command(self, command_str):
         return self.add_handler(self.command_handlers, command_str) 
