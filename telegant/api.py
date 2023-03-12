@@ -11,7 +11,7 @@ class Api:
                 print(f"Error sending request: {e}")
 
     async def sendMessage(self, params):
-        await self.request("sendMessage", params)
+        return await self.request("sendMessage", params)
 
     async def sendDice(self, params=None):
-        await self.request("sendDice", params)
+        return await self.request("sendDice", params)
