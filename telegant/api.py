@@ -10,8 +10,8 @@ class Api:
             except Exception as e:
                 print(f"Error sending request: {e}")
 
-    async def sendMessage(self, params):
+    async def sendMessage(self, **params):
         return await self.request("sendMessage", params)
 
-    async def sendDice(self, params=None):
+    async def sendDice(self, **params):  
         return await self.request("sendDice", params)
