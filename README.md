@@ -31,7 +31,7 @@ bot = Telegant("YOUR_BOT_TOKEN_HERE")
 
 @bot.hears("hello")
 async def say_hello(bot, update): 
-    await bot.sendMessage(chat_id=update["message"]["chat"]["id"], text="What's up?")
+    await bot.sendMessage(text="What's up?")
 
 #Your code here (Recommended to write your functions in order)
 
