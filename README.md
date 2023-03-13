@@ -24,10 +24,10 @@ pip install telegant
 # Example 
 
 ```python
-from telegant import Telegant
+from telegant import Bot
 import asyncio
 
-bot = Telegant("YOUR_BOT_TOKEN_HERE")
+bot = Bot("YOUR_BOT_TOKEN_HERE")
 
 @bot.hears("hello")
 async def say_hello(bot, update): 
