@@ -115,7 +115,7 @@ Telegant also offers to you simply detect your callbacks where you able to assig
 ### Many callbacks example 
 
 ```python 
-@bot.callbacks('option1', 'option2')
+@bot.callbacks(['option1', 'option2'])
 async def say_hello(bot, update):  
     await bot.sendMessage(text="Callbacks are perfect!")
 ```
