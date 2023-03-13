@@ -61,7 +61,7 @@ async def say_hello(bot, update):
         {"text": "Option 1 (inline)", "data": "option1"},  
     ]
 
-    await bot.sendMessage(chat_id=update["message"]["chat"]["id"],text="What's up?", reply_markup=bot.create_reply_markup(buttons))
+    await bot.sendMessage(text="What's up?", reply_markup=bot.create_reply_markup(buttons))
 ```
 
 ### Reply buttons example
@@ -74,7 +74,7 @@ async def say_hello(bot, update):
         {"text": "Option 1 (reply)"},  
     ]
 
-    await bot.sendMessage(chat_id=pdate["message"]["chat"]["id"],text="What's up?", reply_markup=bot.create_reply_markup(buttons))
+    await bot.sendMessage(text="What's up?", reply_markup=bot.create_reply_markup(buttons))
 ```
 
 Bot always detects your buttons type automatically by data key. 
@@ -90,14 +90,14 @@ For single command use @bot.command() decorator.
 ```python 
 @bot.command("start")
 async def say_hello(bot, update):  
-    await bot.sendMessage(chat_id=update["message"]["chat"]["id"], text="Sup I'm start")
+    await bot.sendMessage(text="Sup I'm start")
 ```
 For several commands use @bot.commands() decorator.
 
 ```python 
 @bot.commands(['help', 'ask'])
 async def say_hello(bot, update):  
-    await bot.sendMessage(chat_id=update["message"]["chat"]["id"], text="You've reached for help")
+    await bot.sendMessage(text="You've reached for help")
 ```
 
 Export data after command by your keys
@@ -106,7 +106,7 @@ Export data after command by your keys
 @bot.commands(['usernameandage'])
 @bot.with_args(['username', 'age'])
 async def handler(bot, update, data): 
-    await bot.sendMessage(chat_id=update["message"]["chat"]["id"], text=f"Hello {data['username']}, you are {data['age']} years old.")
+    await bot.sendMessage(text=f"Hello {data['username']}, you are {data['age']} years old.")
 ```
 
 ## Callbacks
@@ -117,7 +117,7 @@ Telegant also offers to you simply detect your callbacks where you able to assig
 ```python 
 @bot.callbacks('option1', 'option2')
 async def say_hello(bot, update):  
-    await bot.sendMessage(chat_id=update["message"]["chat"]["id"], text="Callbacks are perfect!")
+    await bot.sendMessage(text="Callbacks are perfect!")
 ```
 
 ### Single callback example
@@ -125,5 +125,5 @@ async def say_hello(bot, update):
 ```python 
 @bot.callback('option1')
 async def say_hello(bot, update):  
-    await bot.sendMessage(chat_id=update["message"]["chat"]["id"], text="Callback is perfect")
+    await bot.sendMessage(text="Callback is perfect")
 ```
