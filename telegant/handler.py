@@ -1,4 +1,5 @@
 import re
+import aiohttp
 
 class Handler:
     async def handle_update(self, update):
