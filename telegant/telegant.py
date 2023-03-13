@@ -1,10 +1,9 @@
 from telegant.api import Api
-from telegant.decorator import Decorator
 from telegant.handler import Handler
 from telegant.helper import Helper
 import aiohttp   
 
-class Bot(Handler, Decorator, Api, Helper): 
+class Bot(Handler, Api, Helper): 
     def __init__(self, token):
         self.token = token
         self.base_url = f"https://api.telegram.org/bot{self.token}/"
@@ -42,6 +41,39 @@ class Bot(Handler, Decorator, Api, Helper):
         except Exception as e:
             print(f"Error polling for updates: {e}")
             return None, last_update_id
+
+    def add_handler(self, handler_dict, key):
+        def decorator(handler):
+            handler_dict[key] = handler
+            return handler
+        return decorator
+
+    def hears(self, pattern):
+        return self.add_handler(self.message_handlers, pattern) 
+
+    def command(self, command_str):
+        return self.add_handler(self.command_handlers, command_str) 
+
+    def commands(self, commands_list):
+        def decorator(handler_func):
+            for command in commands_list:
+                self.add_handler(self.command_handlers, command)(handler_func)
+            def wrapper(*args, **kwargs):
+                return handler_func(*args, **kwargs)
+            return wrapper
+        return decorator 
+
+    def callbacks(self, callbacks_list):
+        def decorator(handler_func):
+            for callback in callbacks_list:
+                self.add_handler(self.callback_handlers, callback)(handler_func)
+            def wrapper(*args, **kwargs):
+                return handler_func(*args, **kwargs)
+            return wrapper
+        return decorator 
+
+    def callback(self, callback_data):
+        return self.add_handler(self.callback_handlers, callback_data)
 '''
 class Bot(Decorator): 
     api: Api, 
