@@ -47,7 +47,7 @@ If you need your bot to respond to specified text just use @bot.hears()
 ```python 
 @bot.hears("hello")
 async def say_hello(bot, update): 
-    await bot.sendMessage(chat_id=update["message"]["chat"]["id"], text="What's up?")
+    await bot.sendMessage(text="What's up?")
 ```
 
 ## Sending bot with buttons
