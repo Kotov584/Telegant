@@ -13,7 +13,7 @@ class Handler:
                 await handlers[key](update)
 
     async def handle_message(self, update):
-        chat_id = update["message"]["chat"]["id"]
+        self.chat_id = update["message"]["from"]["id"]
         message_text = update["message"]["text"]
 
         is_command = False
@@ -33,7 +33,7 @@ class Handler:
                     break
 
     async def handle_callback_query(self, update):
-        chat_id = update["callback_query"]["message"]["chat"]["id"]
+        self.chat_id = update["callback_query"]["message"]["from"]["id"]
         callback_data = update["callback_query"]["data"]
         
         callback_handler = self.callback_handlers.get(callback_data)

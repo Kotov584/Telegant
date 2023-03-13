@@ -5,6 +5,7 @@ class Api:
         async with aiohttp.ClientSession() as session:
             try:
                 url = f"{self.base_url}{action}"
+                params["chat_id"] = self.chat_id
                 response = await session.post(url, params=params)
                 return await response.json()
             except Exception as e:

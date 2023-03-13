@@ -11,6 +11,7 @@ class Bot(Handler, Decorator, Api, Helper):
         self.message_handlers = {}
         self.command_handlers = {}
         self.callback_handlers = {} 
+        self.chat_id = 0
         self.user_dialogues = {}
 
     async def start_polling(self):
