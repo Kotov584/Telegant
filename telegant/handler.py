@@ -33,21 +33,14 @@ class Handler:
                     break
 
     async def handle_callback_query(self, update):
-        self.chat_id = update["callback_query"]["message"]["from"]["id"]
+        self.chat_id = update["callback_query"]["from"]["id"]
         callback_data = update["callback_query"]["data"]
         
         callback_handler = self.callback_handlers.get(callback_data)
-        if callback_handler is not None:
+        if callback_handler is not None:    
             await callback_handler(self, update, update["callback_query"]["message"])
 
         await self.answer_callback_query(update["callback_query"]["id"])
 
-    async def answer_callback_query(self, callback_query_id):
-        async with aiohttp.ClientSession() as session:
-            try:
-                await session.post(
-                    f"{self.base_url}answerCallbackQuery",
-                    params={"callback_query_id": callback_query_id}
-                )
-            except Exception as e:
-                print(f"Error answering callback query: {e}")
+    async def answer_callback_query(self, callback_query_id): 
+        return await self.request("answerCallbackQuery", {"callback_query_id": callback_query_id})
